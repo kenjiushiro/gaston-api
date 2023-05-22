@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+
+  adminer:
+    image: adminer
+    networks:
+      - gaston-network
+    ports:
+      - 8080:8080
+    restart: always
+
+  db:
+    environment:
+      POSTGRES_DB: gaston
+      POSTGRES_PASSWORD: aber
+      POSTGRES_USER: gaston
+    image: postgres
+    networks:
+      - gaston-network
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+networks:
+  gaston-network:
+    driver: bridge
+
+volumes:
+  db_data:
