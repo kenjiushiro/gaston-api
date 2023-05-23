@@ -23,7 +23,7 @@ import { UserModule } from './user/user.module';
         database: configService.get('DB_NAME'),
         synchronize: true,
         autoLoadEntities: true,
-        migrations: ['src/'],
+        migrations: ['src/migrations/*.ts'],
         migrationsTableName: 'gastonMigrations',
       }),
       inject: [ConfigService],

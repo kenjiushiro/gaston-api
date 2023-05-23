@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ExpensesController } from './expenses.controller';
 import { ExpensesService } from './services/expenses.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Expense, ExpenseCurrency, ExpenseTag } from './models';
+import { Expense, ExpenseCurrency, ExpenseTag } from './entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Expense, ExpenseTag, ExpenseCurrency])],
