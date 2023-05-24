@@ -31,7 +31,7 @@ export class Expense {
   @JoinTable()
   tags: ExpenseTag[];
 
-  @ManyToMany(() => User)
+  @ManyToOne(() => User)
   @JoinTable()
-  user: User[];
+  user: User;
 }

@@ -2,7 +2,7 @@ import {
   Column,
   Entity,
   JoinTable,
-  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Expense } from '../../expense/entities/expense.entity';
@@ -15,7 +15,7 @@ export class User {
   @Column('text')
   email: string;
 
-  @ManyToMany(() => Expense)
+  @OneToMany(() => Expense, (expense: Expense) => expense.user)
   @JoinTable()
   expenses: Expense[];
 }
