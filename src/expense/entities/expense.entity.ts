@@ -4,10 +4,10 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ExpenseTag, ExpenseCurrency } from '.';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class Expense {
@@ -30,4 +30,8 @@ export class Expense {
   @ManyToMany(() => ExpenseTag)
   @JoinTable()
   tags: ExpenseTag[];
+
+  @ManyToMany(() => User)
+  @JoinTable()
+  user: User[];
 }
