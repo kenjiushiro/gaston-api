@@ -16,9 +16,6 @@ export const dataSourceOptions: PostgresConnectionOptions = {
   migrationsRun: false,
   logging: true,
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
-  // cli: {
-  //   migrationsDir: './migrations',
-  // },
 };
 
 export default dataSourceOptions;

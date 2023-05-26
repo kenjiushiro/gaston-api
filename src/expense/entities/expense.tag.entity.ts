@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from '../../user/entities/user.entity';
 
 @Entity()
 export class ExpenseTag {
@@ -7,4 +14,8 @@ export class ExpenseTag {
 
   @Column('text')
   name: string;
+
+  @ManyToOne(() => User)
+  @JoinTable()
+  user: User;
 }
