@@ -7,6 +7,11 @@ import {
 } from 'typeorm';
 import { Expense, ExpenseTag } from '../../expense/entities';
 
+export enum UserRole {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -17,6 +22,13 @@ export class User {
 
   @Column('text')
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
 
   @OneToMany(() => Expense, (expense: Expense) => expense.user)
   @JoinTable()
