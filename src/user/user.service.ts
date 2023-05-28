@@ -14,9 +14,6 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     if (await this.findByEmail(createUserDto.email)) {
-      this.logger.warn(
-        `A user with the email ${createUserDto.email} already exists`,
-      );
       throw new ConflictException(
         `A user with the email ${createUserDto.email} already exists`,
       );
