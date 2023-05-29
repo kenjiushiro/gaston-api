@@ -1,5 +1,5 @@
 export class CreateExpenseDto {
-  userId: number;
+  user: number;
   amount: number;
   description: string;
   date: Date;

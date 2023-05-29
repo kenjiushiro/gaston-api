@@ -12,12 +12,25 @@ export class ExpenseService {
   ) {}
 
   create(createExpenseDto: CreateExpenseDto): Promise<Expense> {
-    const newExpense = this.expenseRepository.create(createExpenseDto);
+    const newExpense = this.expenseRepository.create({
+      ...createExpenseDto,
+      user: {
+        id: createExpenseDto.user,
+      },
+    });
     return this.expenseRepository.save(newExpense);
   }
 
   findAll(): Promise<Expense[]> {
     return this.expenseRepository.find();
+  }
+
+  findByUserId(userId: number): Promise<Expense[]> {
+    return this.expenseRepository.find({
+      where: {
+        user: { id: userId },
+      },
+    });
   }
 
   findOne(id: number): Promise<Expense> {

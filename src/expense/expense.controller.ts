@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   Logger,
+  Req,
 } from '@nestjs/common';
 import { ExpenseService } from './expense.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { Request } from 'express';
 
 @Controller('expense')
 export class ExpenseController {
@@ -20,21 +22,24 @@ export class ExpenseController {
   ) {}
 
   @Post()
-  create(@Body() createExpenseDto: CreateExpenseDto) {
+  create(@Body() createExpenseDto: CreateExpenseDto, @Req() request: any) {
+    const userId = request.user.sub;
+    createExpenseDto.user = userId;
     this.logger.log(
       'Request received to create an expense',
       this.constructor.name,
     );
-    return this.expenseService.create(createExpenseDto);
+    return this.expenseService.create({ ...createExpenseDto });
   }
 
   @Get()
-  findAll() {
+  findAll(@Req() request: any) {
+    const userId = request.user.sub;
     this.logger.log(
       'Request received to fetch all expenses',
       this.constructor.name,
     );
-    return this.expenseService.findAll();
+    return this.expenseService.findByUserId(userId);
   }
 
   @Get(':id')

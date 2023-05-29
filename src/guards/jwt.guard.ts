@@ -11,7 +11,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from './Public';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class JwtGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
