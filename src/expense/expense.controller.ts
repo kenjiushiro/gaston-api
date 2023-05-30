@@ -8,14 +8,10 @@ import {
   Delete,
   Logger,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { ExpenseService } from './expense.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
-import { Request } from 'express';
-import { OwnershipGuard } from '../guards/ownership.guard';
-import { Expense } from './entities';
 
 @Controller('expense')
 export class ExpenseController {
@@ -55,7 +51,6 @@ export class ExpenseController {
   }
 
   @Patch(':id')
-  @UseGuards(OwnershipGuard(Expense))
   update(@Param('id') id: string, @Body() updateExpenseDto: UpdateExpenseDto) {
     this.logger.log(
       `Request received to patch expense with it ${id}`,
