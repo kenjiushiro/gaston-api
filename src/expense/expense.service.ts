@@ -30,6 +30,7 @@ export class ExpenseService {
       where: {
         user: { id: userId },
       },
+      relations: ['tags'],
     });
   }
 
