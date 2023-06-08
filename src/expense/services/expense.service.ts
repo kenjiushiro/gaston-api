@@ -1,8 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Expense } from './entities';
-import { CreateExpenseDto } from './dto/create-expense.dto';
-import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { Expense } from '../entities';
+import { CreateExpenseDto } from '../dto';
+import { UpdateExpenseDto } from '../dto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -34,17 +38,32 @@ export class ExpenseService {
     });
   }
 
-  findOne(id: number): Promise<Expense> {
-    return this.expenseRepository.findOneBy({ id });
+  async findOne(id: number, userId: number): Promise<Expense> {
+    const expense = await this.expenseRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['tags', 'user'],
+    });
+
+    if (!expense) {
+      throw new NotFoundException('Expense not found');
+    }
+
+    if (expense.user?.id != userId)
+      throw new ForbiddenException(
+        'You are not allowed to access this expense',
+      );
+    return expense;
   }
 
-  async update(id: number, updateExpenseDto: UpdateExpenseDto) {
-    const expense = await this.findOne(id);
+  async update(id: number, updateExpenseDto: UpdateExpenseDto, userId: number) {
+    const expense = await this.findOne(id, userId);
     return this.expenseRepository.save({ ...expense, ...updateExpenseDto });
   }
 
-  async remove(id: number): Promise<Expense> {
-    const expense = await this.findOne(id);
+  async remove(id: number, userId: number): Promise<Expense> {
+    const expense = await this.findOne(id, userId);
     return this.expenseRepository.remove(expense);
   }
 }

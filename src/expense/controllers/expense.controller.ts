@@ -7,11 +7,11 @@ import {
   Param,
   Delete,
   Logger,
-  Req,
 } from '@nestjs/common';
-import { ExpenseService } from './expense.service';
-import { CreateExpenseDto } from './dto/create-expense.dto';
-import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { ExpenseService } from '../services/expense.service';
+import { CreateExpenseDto } from '../dto';
+import { UpdateExpenseDto } from '../dto';
+import { UserId } from '../../common/decorators/user.id.decorator';
 
 @Controller('expense')
 export class ExpenseController {
@@ -21,8 +21,7 @@ export class ExpenseController {
   ) {}
 
   @Post()
-  create(@Body() createExpenseDto: CreateExpenseDto, @Req() request: any) {
-    const userId = request.user.sub;
+  create(@Body() createExpenseDto: CreateExpenseDto, @UserId() userId: number) {
     createExpenseDto.user = userId;
     this.logger.log(
       'Request received to create an expense',
@@ -32,8 +31,7 @@ export class ExpenseController {
   }
 
   @Get()
-  findAll(@Req() request: any) {
-    const userId = request.user.sub;
+  findAll(@UserId() userId: number) {
     this.logger.log(
       'Request received to fetch all expenses',
       this.constructor.name,
@@ -42,29 +40,33 @@ export class ExpenseController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string, @UserId() userId: number) {
     this.logger.log(
       `Request received to fetch expense with it ${id}`,
       this.constructor.name,
     );
-    return this.expenseService.findOne(+id);
+    return this.expenseService.findOne(+id, userId);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateExpenseDto: UpdateExpenseDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateExpenseDto: UpdateExpenseDto,
+    @UserId() userId: number,
+  ) {
     this.logger.log(
       `Request received to patch expense with it ${id}`,
       this.constructor.name,
     );
-    return this.expenseService.update(+id, updateExpenseDto);
+    return this.expenseService.update(+id, updateExpenseDto, userId);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string, @UserId() userId: number) {
     this.logger.log(
       `Request received to delete expense with it ${id}`,
       this.constructor.name,
     );
-    return this.expenseService.remove(+id);
+    return this.expenseService.remove(+id, userId);
   }
 }

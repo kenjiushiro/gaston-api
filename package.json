@@ -25,6 +25,7 @@
       "typeorm:migration:revert": "typeorm migration:revert -d ./dist/datasource.js"
    },
    "dependencies": {
+      "@nestjs/class-transformer": "^0.4.0",
       "@nestjs/common": "^9.0.0",
       "@nestjs/config": "^2.3.2",
       "@nestjs/core": "^9.0.0",
