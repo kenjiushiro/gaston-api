@@ -12,6 +12,7 @@ import { ExpenseService } from '../services/expense.service';
 import { CreateExpenseDto } from '../dto';
 import { UpdateExpenseDto } from '../dto';
 import { UserId } from '../../common/decorators/user.id.decorator';
+import { ExpenseDto } from '../dto/expense/expense.dto';
 
 @Controller('expense')
 export class ExpenseController {
@@ -40,12 +41,12 @@ export class ExpenseController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @UserId() userId: number) {
+  async findOne(@Param('id') id: string, @UserId() userId: number) {
     this.logger.log(
       `Request received to fetch expense with it ${id}`,
       this.constructor.name,
     );
-    return this.expenseService.findOne(+id, userId);
+    return new ExpenseDto(await this.expenseService.findOne(+id, userId));
   }
 
   @Patch(':id')
